@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qianfeng.mapper.UserInfoMapper">
+
+    <insert id="register" parameterType="com.qianfeng.pojo.UserInfo">
+        INSERT INTO userInfo(userid,account,username,password,email,mobile,areacode,status,icon)
+        VALUES (DEFAULT ,#{account},#{username},#{password},#{email},#{mobile},#{areacode},#{status},#{icon})
+    </insert>
+
+    <select id="loginCheck" resultType="com.qianfeng.pojo.UserInfo" parameterType="com.qianfeng.pojo.UserInfo">
+        SELECT*FROM userInfo WHERE username=#{username} AND password = #{password}
+    </select>
+    <!--查询所有状态为1的用户信息-->
+    <select id="getAllUserInfo" resultType="com.qianfeng.pojo.UserInfo">
+        select *from userinfo where status = 1
+    </select>
+</mapper>

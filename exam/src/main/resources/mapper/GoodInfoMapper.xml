@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qianfeng.dao.GoodsMapper">
+    <select id="selectAllGoods" resultType="com.qianfeng.pojo.GoodInfo">
+        SELECT *FROM t_goods
+    </select>
+
+    <delete id="delGoodsInfoById" parameterType="int">
+        DELETE FROM t_goods WHERE id = #{id}
+    </delete>
+
+    <select id="ConditionsOfTheQuery" parameterType="com.qianfeng.dto.GoodInfoDTO" resultType="com.qianfeng.dto.GoodInfoDTO">
+        SELECT goodsTitle,goodsName,basePrice,price,costPrice,stockNum,goodsDesc  FROM t_goods where goodsName=#{goodsName} and price between #{startPrcie}and #{endPrice}and status=#{status}
+    </select>
+
+    <insert id="addGoodsInfo"  parameterType="com.qianfeng.pojo.GoodInfo">
+        INSERT INTO t_goods (id,goodsTitle,goodsName,basePrice,price,costPrice,stockNum,goodsDesc,goodsHot,status,goodsType)
+        VALUES (DEFAULT,#{goodsTitle},#{goodsName},#{basePrice},#{price},#{costPrice},#{stockNum},#{goodsDesc},#{goodsHot},#{status},#{goodsType},)
+    </insert>
+
+    <update id="upDateGoodsInfoById" parameterType="com.qianfeng.pojo.GoodInfo" >
+        UPDATE t_goods SET
+        <trim suffixOverrides=",">
+            <if test="goodsTitle !=null and goodsTitle!=''">
+                goodsTitle = #{goodsTitle},
+            </if>
+            <if test="goodsName !=null and goodsName!=''">
+                goodsName = #{goodsName},
+            </if>
+            <if test="basePrice !=null and basePrice!=''">
+                basePrice = #{basePrice},
+            </if>
+            <if test="price !=null and price!=''">
+                email = #{price},
+            </if>
+            <if test="costPrice !=null and costPrice!=''">
+                mobile = #{costPrice},
+            </if>
+            <if test="stockNum !=null and stockNum!=''">
+                areaCode = #{stockNum},
+            </if>
+            <if test="goodsDesc !=null and goodsDesc!=''">
+                goodsDesc = #{goodsDesc},
+            </if>
+            <if test="goodsHot !=null and goodsHot!=''">
+                goodsHot = #{goodsHot},
+            </if>
+            <if test="status !=null and status!=''">
+                status = #{status},
+            </if>
+            <if test="goodsType !=null and goodsType!=''">
+                goodsType = #{goodsType},
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+</mapper>

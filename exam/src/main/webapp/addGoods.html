@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table border="1" cellspacing="0" cellpadding="0" align="center" width="600px">
+    <tr align="center">
+        <td>
+            新增(修改)商品
+        </td>
+    </tr>
+    <tr>
+        <td>
+            商品名:<input id="goodsName">
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            商品标题:<input id="goodsTitle">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            基础价格:<input id="basePrice">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            价格:<input id="price">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            成本价格:<input id="costPrice">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            库存数量:<input id="stockNum">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            商品热度:<input id="goodsHot">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            上下架状态:<select id="status">
+            <option value="TOP">上架</option>
+            <option value="DOWN">下架</option>
+            <option value="DBL">删除</option>
+        </select>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            商家类型:<select id="goodsType">
+            <option value="SELF">自营</option>
+            <option value="JD">京东</option>
+            <option value="OVERSEAS">海外购</option>
+        </select>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            商品介绍:<input id="goodsDesc" type="textarea">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="submit" onclick="addGoodsNew()">
+            <input type="reset">
+        </td>
+    </tr>
+</table>
+<script src="jquery/jquery-2.1.1.min.js"></script>
+<script>
+    var id = window.location.search.split("=").pop();
+    function addGoodsNew(){
+        if(id==null){
+            $.ajax({
+                type: "Post",
+                //请求的媒体类型
+                contentType: "application/json;charset=UTF-8",
+                //返回数据格式
+                dataType: "json",
+                //请求地址
+                url: "http://localhost:8080/abc/addGoodsNew",
+                data:JSON.stringify({
+                    "goodsName":$("#goodsName").val(),
+                    "goodsTitle":$("#goodsTitle").val(),
+                    "basePrice":$("#basePrice").val(),
+                    "price":$("#price").val(),
+                    "costPrice":$("#costPrice").val(),
+                    "stockNum":$("#stockNum").val(),
+                    "goodsHot":$("#goodsHot").val(),
+                    "status":$("#status option:selected").val(),
+                    "goodsType":$("#goodsType option:selected").val(),
+                    "goodsDesc":$("#goodsDesc").val()
+                }),
+                //请求成功
+                success: function (result) {
+                    alert(result);
+                },
+                //请求失败，包含具体的错误信息
+                error: function (e) {
+                    console.log(e.status);
+                    console.log(e.responseText);
+                }
+            })
+        }else{
+            $.ajax({
+                type: "Post",
+                //请求的媒体类型
+                contentType: "application/json;charset=UTF-8",
+                //返回数据格式
+                dataType: "json",
+                //请求地址
+                url: "http://localhost:8080/abc/updateGoods",
+                data:JSON.stringify({
+                    "id":id,
+                    "goodsName":$("#goodsName").val(),
+                    "goodsTitle":$("#goodsTitle").val(),
+                    "basePrice":$("#basePrice").val(),
+                    "price":$("#price").val(),
+                    "costPrice":$("#costPrice").val(),
+                    "stockNum":$("#stockNum").val(),
+                    "goodsHot":$("#goodsHot").val(),
+                    "status":$("#status option:selected").val(),
+                    "goodsType":$("#goodsType option:selected").val(),
+                    "goodsDesc":$("#goodsDesc").val()
+                }),
+                //请求成功
+                success: function (result) {
+                    window.location.href="goodsList.html";
+                },
+                //请求失败，包含具体的错误信息
+                error: function (e) {
+                    console.log(e.status);
+                    console.log(e.responseText);
+                }
+            })
+        }
+
+    }
+    function initPage(){
+
+        if(id==null){
+            return;
+        }
+        $.ajax({
+            type: "Get",
+            //请求的媒体类型
+            contentType: "application/json;charset=UTF-8",
+            //返回数据格式
+            dataType: "json",
+            //请求地址
+            url: "http://localhost:8080/abc/searchGoodsById?id="+id,
+
+            //请求成功
+            success: function (result) {
+                $("#goodsName").val(result.goodsName),
+                    $("#goodsTitle").val(result.goodsTitle),
+                    $("#basePrice").val(result.basePrice),
+                    $("#price").val(result.price),
+                    $("#costPrice").val(result.costPrice),
+                    $("#stockNum").val(result.stockNum),
+                    $("#goodsHot").val(result.goodsHot),
+                    $("#status").val(result.status),
+                    $("#goodsType").val(result.goodsType),
+                    $("#goodsDesc").val(result.goodsDesc)
+            },
+            //请求失败，包含具体的错误信息
+            error: function (e) {
+                console.log(e.status);
+                console.log(e.responseText);
+            }
+        })
+    }
+    initPage();
+</script>
+</body>
+</html>
